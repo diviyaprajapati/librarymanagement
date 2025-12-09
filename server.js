@@ -9,10 +9,16 @@ import adminRoutes from "./routes/adminRoutes.js";
 import issuedBookRoutes from "./routes/issuedBookRoutes.js";
 import requestRoutes from "./routes/requestRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js";
+// ✅ Database connection
+import connectDB from "./config/db.js";
+
+// Connect to MongoDB
+
 
 
 
 dotenv.config();
+connectDB();
 const app = express();
 
 app.use(cors({
@@ -35,15 +41,7 @@ app.get("/", (req, res) => {
   res.send("Library Management System API is running...");
 });
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
-// ✅ Server start
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
