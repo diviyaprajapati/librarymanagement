@@ -3,36 +3,38 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 import bookRoutes from "./routes/bookRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import issuedBookRoutes from "./routes/issuedBookRoutes.js";
 import requestRoutes from "./routes/requestRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js";
-// ✅ Database connection
+
+// DB Connection
 import connectDB from "./config/db.js";
-
-// Connect to MongoDB
-
-
-
 
 dotenv.config();
 connectDB();
+
 const app = express();
 
+// Allow frontend on local + production domain
 app.use(cors({
-  origin: "http://localhost:2000",
+  origin: [
+    "http://localhost:2000",
+    "https://librarymanagement-lvba.vercel.app" // production frontend
+  ],
   credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Routes mount
+// Routes
 app.use("/api/books", bookRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/books", bookRoutes);
 app.use("/api/issued", issuedBookRoutes);
 app.use("/api/request-book", requestRoutes);
 app.use("/api/public", statsRoutes);
@@ -40,7 +42,6 @@ app.use("/api/public", statsRoutes);
 app.get("/", (req, res) => {
   res.send("Library Management System API is running...");
 });
-
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
