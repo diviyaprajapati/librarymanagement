@@ -23,7 +23,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:2000",
-    "https://librarymanagement-lvba.vercel.app" // production frontend
+
   ],
   credentials: true
 }));
